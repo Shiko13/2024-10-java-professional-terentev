@@ -1,8 +1,9 @@
 rootProject.name = "otusJava"
 include("hw01-gradle")
 include("hw02-collections-and-generics")
-include("hw03-annotations")
+include("hw04-garbage-collector")
 
+include("hw03-annotations")
 pluginManagement {
     val dependencyManagement: String by settings
     val springframeworkBoot: String by settings
