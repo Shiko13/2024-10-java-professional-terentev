@@ -4,6 +4,7 @@ include("hw02-collections-and-generics")
 include("hw03-annotations")
 include("hw04-garbage-collector")
 include("hw05-byte-code")
+include("hw06-oop")
 
 pluginManagement {
     val dependencyManagement: String by settings
