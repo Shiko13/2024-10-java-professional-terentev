@@ -5,6 +5,7 @@ include("hw03-annotations")
 include("hw04-garbage-collector")
 include("hw05-byte-code")
 include("hw06-oop")
+include("hw07-patterns")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -17,3 +18,4 @@ pluginManagement {
         id("com.github.johnrengelman.shadow") version johnrengelmanShadow
     }
 }
+
