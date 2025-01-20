@@ -19,3 +19,8 @@ pluginManagement {
         id("com.github.johnrengelman.shadow") version johnrengelmanShadow
     }
 }
+include("hw09-jdbc")
+include("hw09-jdbc:demo")
+findProject(":hw09-jdbc:demo")?.name = "demo"
+include("hw09-jdbc:homework")
+findProject(":hw09-jdbc:homework")?.name = "homework"
