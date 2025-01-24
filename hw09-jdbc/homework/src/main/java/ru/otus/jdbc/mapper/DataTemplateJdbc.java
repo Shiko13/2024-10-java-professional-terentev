@@ -86,18 +86,17 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
         }
     }
 
-    private void setEntityField(T client, String field, Object value) {
+    private void setEntityField(T client, String fieldName, Object value) {
         if (value == null) {
             return;
         }
 
         try {
-            String methodName = "set" + capitalize(field);
-            client.getClass().getMethod(methodName, value.getClass()).invoke(client, value);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("No setter method for field: " + field, e);
+            Field field = client.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(client, value);
         } catch (Exception e) {
-            throw new RuntimeException("Error while setting field: " + field, e);
+            throw new RuntimeException("Error while setting fieldName: " + fieldName, e);
         }
     }
 
