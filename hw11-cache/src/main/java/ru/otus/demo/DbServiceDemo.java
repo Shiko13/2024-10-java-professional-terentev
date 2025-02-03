@@ -29,6 +29,7 @@ public class DbServiceDemo {
 
         ///
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, clientTemplate);
+
         dbServiceClient.saveClient(new Client("dbServiceFirst"));
 
         var clientSecond = dbServiceClient.saveClient(new Client("dbServiceSecond"));
