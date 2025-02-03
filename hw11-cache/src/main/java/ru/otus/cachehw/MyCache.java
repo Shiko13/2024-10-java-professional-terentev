@@ -1,6 +1,5 @@
 package ru.otus.cachehw;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +7,12 @@ import java.util.WeakHashMap;
 
 public class MyCache<K, V> implements HwCache<K, V> {
 
-    private final Map<K, WeakReference<V>> cache = new WeakHashMap<>();
+    private final Map<K, V> cache = new WeakHashMap<>();
     private final List<HwListener<K, V>> listeners = new ArrayList<>();
 
     @Override
     public void put(K key, V value) {
-        cache.put(key, new WeakReference<>(value));
+        cache.put(key, value);
         notifyListeners(key, value, "put");
     }
 
@@ -26,8 +25,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public V get(K key) {
-        WeakReference<V> ref = cache.get(key);
-        V value = ref != null ? ref.get() : null;
+        V value = cache.get(key);
         if (value != null) {
             notifyListeners(key, value, "get");
         }

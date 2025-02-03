@@ -15,7 +15,7 @@ public class DbServiceClientImpl implements DBServiceClient {
 
     private final DataTemplate<Client> dataTemplate;
     private final TransactionRunner transactionRunner;
-    private final MyCache<Long, Client> clientCache;
+    private final MyCache<String, Client> clientCache;
 
     public DbServiceClientImpl(TransactionRunner transactionRunner, DataTemplate<Client> dataTemplate) {
         this.transactionRunner = transactionRunner;
@@ -29,12 +29,12 @@ public class DbServiceClientImpl implements DBServiceClient {
             if (client.getId() == null) {
                 var clientId = dataTemplate.insert(connection, client);
                 var createdClient = new Client(clientId, client.getName());
-                clientCache.put(clientId, createdClient);
+                clientCache.put(String.valueOf(clientId), createdClient);
                 log.info("created client: {}", createdClient);
                 return createdClient;
             }
             dataTemplate.update(connection, client);
-            clientCache.put(client.getId(), client);
+            clientCache.put(String.valueOf(client.getId()), client);
             log.info("updated client: {}", client);
             return client;
         });
@@ -42,7 +42,8 @@ public class DbServiceClientImpl implements DBServiceClient {
 
     @Override
     public Optional<Client> getClient(long id) {
-        Client cachedClient = clientCache.get(id);
+        String key = String.valueOf(id);
+        Client cachedClient = clientCache.get(key);
         if (cachedClient != null) {
             log.info("Fetched client from cache: {}", cachedClient);
             return Optional.of(cachedClient);
@@ -50,7 +51,7 @@ public class DbServiceClientImpl implements DBServiceClient {
 
         return transactionRunner.doInTransaction(connection -> {
             var clientOptional = dataTemplate.findById(connection, id);
-            clientOptional.ifPresent(client -> clientCache.put(id, client));
+            clientOptional.ifPresent(client -> clientCache.put(key, client));
             log.info("client: {}", clientOptional);
             return clientOptional;
         });
