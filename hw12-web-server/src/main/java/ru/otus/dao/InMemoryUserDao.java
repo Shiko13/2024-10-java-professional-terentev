@@ -5,12 +5,10 @@ import ru.otus.model.User;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 public class InMemoryUserDao implements UserDao {
 
     public static final String DEFAULT_PASSWORD = "11111";
-    private final Random random = new Random();
     private final Map<Long, User> users;
 
     public InMemoryUserDao() {
@@ -25,18 +23,7 @@ public class InMemoryUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findById(long id) {
-        return Optional.ofNullable(users.get(id));
-    }
-
-    @Override
-    public Optional<User> findRandomUser() {
-
-        return users.values().stream().skip(random.nextInt(users.size() - 1)).findFirst();
-    }
-
-    @Override
     public Optional<User> findByLogin(String login) {
-        return users.values().stream().filter(v -> v.getLogin().equals(login)).findFirst();
+        return users.values().stream().filter(v -> v.login().equals(login)).findFirst();
     }
 }
