@@ -29,12 +29,12 @@ public class DbServiceClientImpl implements DBServiceClient {
             if (client.getId() == null) {
                 var clientId = dataTemplate.insert(connection, client);
                 var createdClient = new Client(clientId, client.getName());
-                clientCache.put(String.valueOf(clientId), createdClient);
+                clientCache.put(getCacheKey(clientId), createdClient);
                 log.info("created client: {}", createdClient);
                 return createdClient;
             }
             dataTemplate.update(connection, client);
-            clientCache.put(String.valueOf(client.getId()), client);
+            clientCache.put(getCacheKey(client.getId()), client);
             log.info("updated client: {}", client);
             return client;
         });
@@ -64,5 +64,9 @@ public class DbServiceClientImpl implements DBServiceClient {
             log.info("clientList:{}", clientList);
             return clientList;
         });
+    }
+
+    private String getCacheKey(Long clientId) {
+        return String.valueOf(clientId);
     }
 }
