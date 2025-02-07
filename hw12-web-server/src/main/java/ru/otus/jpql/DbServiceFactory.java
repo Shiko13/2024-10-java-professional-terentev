@@ -11,7 +11,7 @@ import ru.otus.jpql.crm.model.Phone;
 import ru.otus.jpql.crm.service.DBServiceClient;
 import ru.otus.jpql.crm.service.DbServiceClientImpl;
 
-public class DbServiceDemo {
+public class DbServiceFactory {
 
     public static final String HIBERNATE_CFG_FILE = "hibernate.cfg.xml";
 

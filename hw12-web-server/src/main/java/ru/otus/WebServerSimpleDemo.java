@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.otus.dao.InMemoryUserDao;
 import ru.otus.dao.UserDao;
-import ru.otus.jpql.DbServiceDemo;
+import ru.otus.jpql.DbServiceFactory;
 import ru.otus.jpql.crm.service.DBServiceClient;
 import ru.otus.server.UsersWebServerSimple;
 import ru.otus.services.TemplateProcessor;
@@ -24,7 +24,7 @@ public class WebServerSimpleDemo {
     private static final String TEMPLATES_DIR = "/templates/";
 
     public static void main(String[] args) throws Exception {
-        DBServiceClient dbServiceClient = DbServiceDemo.getDBServiceClient();
+        DBServiceClient dbServiceClient = DbServiceFactory.getDBServiceClient();
         Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
         TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
 

@@ -23,12 +23,12 @@ public class ClientApiServlet extends HttpServlet {
     private static final String PARAM_NAME = "name";
     private static final String PARAM_ADDRESS = "address";
     private static final String PARAM_PHONES = "phones";
-    private static DBServiceClient dbServiceClient;
+    private final DBServiceClient dbServiceClient;
     private final Gson gson;
 
 
     public ClientApiServlet(DBServiceClient dbServiceClient, Gson gson) {
-        ClientApiServlet.dbServiceClient = dbServiceClient;
+        this.dbServiceClient = dbServiceClient;
         this.gson = gson;
     }
 
@@ -52,6 +52,9 @@ public class ClientApiServlet extends HttpServlet {
         String phonesParam = request.getParameter(PARAM_PHONES);
         List<Phone> phones = Arrays.stream(phonesParam.split(",")).map(it -> new Phone(null, it)).collect(Collectors.toList());
         dbServiceClient.saveClient(new Client(null, name, new Address(null, address), phones));
-        response.sendRedirect("/clients");
+        Client savedClient = dbServiceClient.saveClient(new Client(null, name, new Address(null, address), phones));
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(gson.toJson(ClientMapper.toDto(savedClient)));
+        response.setStatus(HttpServletResponse.SC_CREATED);
     }
 }
