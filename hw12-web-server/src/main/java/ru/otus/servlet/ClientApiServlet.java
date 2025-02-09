@@ -51,10 +51,12 @@ public class ClientApiServlet extends HttpServlet {
         String address = request.getParameter(PARAM_ADDRESS);
         String phonesParam = request.getParameter(PARAM_PHONES);
         List<Phone> phones = Arrays.stream(phonesParam.split(",")).map(it -> new Phone(null, it)).collect(Collectors.toList());
-        dbServiceClient.saveClient(new Client(null, name, new Address(null, address), phones));
-        Client savedClient = dbServiceClient.saveClient(new Client(null, name, new Address(null, address), phones));
+
+        Client client = new Client(null, name, new Address(null, address), phones);
+        dbServiceClient.saveClient(client);
+
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(gson.toJson(ClientMapper.toDto(savedClient)));
+        response.getWriter().write(gson.toJson(ClientMapper.toDto(client)));
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
 }

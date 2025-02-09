@@ -1,12 +1,61 @@
 <html xmlns="http://www.w3.org/1999/xhtml" content="text/html;" lang="ru">
 <head>
 	<title>Клиенты</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		table, th, td {
+			border: 1px solid black;
+		}
+
+		th, td {
+			padding: 8px;
+			text-align: left;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		form {
+			margin-bottom: 20px;
+		}
+	</style>
 	<script>
 		function getAllClients() {
 			const allClientsDataContainer = document.getElementById('allClientsDataContainer');
     fetch('/api/clients/')
         .then(response => response.json())
-        .then(clients => allClientsDataContainer.innerHTML = JSON.stringify(clients));
+        .then(clients => {
+        	console.log("Все клиенты:", clients);
+            const tableBody = document.getElementById('clientsTableBody');
+            tableBody.innerHTML = '';
+            
+            for (let i = 0; i < clients.length; i++) {
+                const client = clients[i];
+                const row = document.createElement('tr');
+
+				const nameCell = document.createElement('td');
+				nameCell.textContent = client.name;
+				row.appendChild(nameCell);
+		
+				const addressCell = document.createElement('td');
+				addressCell.textContent = client.address.street;
+				row.appendChild(addressCell);
+		
+				const phoneCell = document.createElement('td');
+				phoneCell.textContent = client.phones[0].number;
+				row.appendChild(phoneCell);
+		
+				tableBody.appendChild(row);
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка загрузки клиентов:", error);
+        });
 		}
 
 		function saveClient(event) {
@@ -36,22 +85,21 @@
 	</script>
 </head>
 
-<body>
 <h4>Сохранить клиента</h4>
 <form onsubmit="saveClient(event)">
 	<label>
 		Name <br/>
-		<input type="text" id="name" name="name" value="Sergei">
+		<input type="text" id="name" name="name" placeholder="Имя клиента" required>
 	</label>
 	<br/>
 	<label>
 		Address<br/>
-		<input type="text" id="address" name="address" value="Kirova street">
+		<input type="text" id="address" name="address" placeholder="Адрес клиента" required>
 	</label>
 	<br/>
 	<label>
 		Phone<br/>
-		<input type="text" id="phone" name="phone" value="+79521234567">
+		<input type="text" id="phone" name="phone" placeholder="Телефон клиента" required>
 	</label>
 	<br/><br/>
 	<input type="submit" value="Сохранить">
@@ -59,7 +107,16 @@
 
 
 <h4>Получить список клиентов</h4>
+<table>
+	<thead>
+	<tr>
+		<th>Имя</th>
+		<th>Адрес</th>
+		<th>Телефон</th>
+	</tr>
+	</thead>
+	<tbody id="clientsTableBody">
+	</tbody>
+</table>
 <button onclick="getAllClients()">Получить всех клиентов</button>
-<pre id="allClientsDataContainer"></pre>
-</body>
 </html>
