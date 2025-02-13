@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ClientServlet extends HttpServlet {
 
     private static final String CLIENTS_PAGE_TEMPLATE = "clients.html";
-    private final transient TemplateProcessor templateProcessor;
+    private final TemplateProcessor templateProcessor;
 
     public ClientServlet(TemplateProcessor templateProcessor) {
         this.templateProcessor = templateProcessor;
