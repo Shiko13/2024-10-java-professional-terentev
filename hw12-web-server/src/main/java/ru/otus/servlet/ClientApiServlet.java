@@ -13,16 +13,11 @@ import ru.otus.mappers.ClientMapper;
 import ru.otus.model.ClientDto;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"java:S1989"})
 public class ClientApiServlet extends HttpServlet {
 
-    private static final String PARAM_NAME = "name";
-    private static final String PARAM_ADDRESS = "address";
-    private static final String PARAM_PHONES = "phones";
     private final DBServiceClient dbServiceClient;
     private final Gson gson;
 
@@ -46,11 +41,15 @@ public class ClientApiServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        String name = request.getParameter(PARAM_NAME);
-        String address = request.getParameter(PARAM_ADDRESS);
-        String phonesParam = request.getParameter(PARAM_PHONES);
-        List<Phone> phones = Arrays.stream(phonesParam.split(",")).map(it -> new Phone(null, it)).collect(Collectors.toList());
-        dbServiceClient.saveClient(new Client(null, name, new Address(null, address), phones));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+
+        ClientDto clientDto = gson.fromJson(request.getReader(), ClientDto.class);
+        List<Phone> phones = clientDto.getPhones().stream()
+                .map(dto -> new Phone(null, dto.getNumber()))
+                .toList();
+
+        Address address = new Address(null, clientDto.getAddress());
+        dbServiceClient.saveClient(new Client(null, clientDto.getName(), address, phones));
     }
 }

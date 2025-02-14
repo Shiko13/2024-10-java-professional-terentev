@@ -43,7 +43,7 @@
 				row.appendChild(nameCell);
 		
 				const addressCell = document.createElement('td');
-				addressCell.textContent = client.address.street;
+				addressCell.textContent = client.address;
 				row.appendChild(addressCell);
 		
 				const phoneCell = document.createElement('td');
@@ -67,8 +67,12 @@
 
 			fetch('api/clients/', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: new URLSearchParams({ name, address, phones: phone })
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+            name: name,
+            address: address,
+            phones: [{ number: phone }]
+        })
 			})
 			.then(response => {
 				if (response.ok) {

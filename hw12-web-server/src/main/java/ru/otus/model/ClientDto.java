@@ -15,7 +15,7 @@ public class ClientDto {
 
     private String name;
 
-    private AddressDto address;
+    private String address;
 
     private List<PhoneDto> phones;
 }

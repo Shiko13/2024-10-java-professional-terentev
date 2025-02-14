@@ -9,7 +9,7 @@ public class ClientMapper {
         ClientDto clientDto = new ClientDto();
         clientDto.setId(client.getId());
         clientDto.setName(client.getName());
-        clientDto.setAddress(AddressMapper.toDto(client.getAddress()));
+        clientDto.setAddress(client.getAddress().getStreet());
         clientDto.setPhones(client.getPhones() != null ? client.getPhones().stream()
                 .map(PhoneMapper::toDto)
                 .toList() : null);
