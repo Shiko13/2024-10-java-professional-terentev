@@ -7,6 +7,10 @@ include("hw05-byte-code")
 include("hw06-oop")
 include("hw07-patterns")
 include("hw08-serialization")
+include("hw10-jpql")
+include("hw11-cache")
+include("hw12-web-server")
+include("hw13-di")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -24,6 +28,3 @@ include("hw09-jdbc:demo")
 findProject(":hw09-jdbc:demo")?.name = "demo"
 include("hw09-jdbc:homework")
 findProject(":hw09-jdbc:homework")?.name = "homework"
-include("hw10-jpql")
-include("hw11-cache")
-include("hw12-web-server")
