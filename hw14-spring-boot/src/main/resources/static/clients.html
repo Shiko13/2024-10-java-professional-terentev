@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<meta charset="UTF-8">
+<head>
+	<title>Клиенты</title>
+	<script>
+		async function submitClientForm() {
+			const clientName = document.getElementById("clientName").value.trim();
+			const address = document.getElementById("clientAddress").value.trim() || null;
+			const phone = document.getElementById("clientPhone").value.trim();
+
+			const newClientContainer = document.getElementById("newClientContainer");
+
+			const clientInfo = {
+				name: clientName,
+				address: address,
+				phones: phone ? [phone] : []
+			};
+
+			try {
+				const response = await fetch("/api/clients/", {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json; charset=utf-8'},
+					body: JSON.stringify(clientInfo),
+				});
+
+				if (!response.ok) {
+					throw new Error("Ошибка при создании клиента");
+				}
+
+				const client = await response.json();
+				newClientContainer.textContent = "Клиент создан успешно";
+				addClientRow(client);
+				clearForm();
+
+			} catch (error) {
+				newClientContainer.textContent = error.message;
+			}
+		}
+
+		async function loadClients() {
+			const response = await fetch("/api/clients/all");
+			const clients = await response.json();
+			clients.forEach(addClientRow);
+		}
+
+		function addClientRow(client) {
+			const table = document.getElementById("clientsTable");
+			const row = table.insertRow();
+
+			row.insertCell(0).textContent = client.id;
+			row.insertCell(1).textContent = client.name;
+			row.insertCell(2).textContent = client.address || "-";
+			row.insertCell(3).textContent = client.phones.join(", ") || "-";
+		}
+
+		function clearForm() {
+			document.getElementById("clientName").value = "";
+			document.getElementById("clientAddress").value = "";
+			document.getElementById("clientPhone").value = "";
+		}
+
+		window.onload = loadClients;
+	</script>
+</head>
+<body>
+<h4>Все клиенты</h4>
+<table id="clientsTable" style="width: 500px">
+	<thead>
+	<tr>
+		<td style="width: 50px"><strong>Id</strong></td>
+		<td style="width: 150px"><strong>Имя</strong></td>
+		<td style="width: 150px"><strong>Адрес</strong></td>
+		<td style="width: 150px"><strong>Телефон</strong></td>
+	</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<h4>Добавить нового клиента</h4>
+<input id="clientName" placeholder="Введите имя клиента" type="text">
+<input id="clientAddress" placeholder="Введите адрес" type="text">
+<input id="clientPhone" placeholder="Введите телефон" type="text">
+<button onclick="submitClientForm()">Создать клиента</button>
+
+<pre id="newClientContainer"></pre>
+</body>
+</html>
