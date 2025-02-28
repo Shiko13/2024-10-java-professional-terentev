@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.lang.Nullable;
-
-import java.util.Set;
 
 @Setter
 @Getter
@@ -20,12 +17,11 @@ public class Client {
 
     private String name;
 
-    @Nullable
     @JsonProperty("address")
     @MappedCollection(idColumn = "address_id")
     private Address address;
 
-    @JsonProperty("phones")
-    @MappedCollection(idColumn = "client_id")
-    private Set<Phone> phones;
+    @JsonProperty("phone")
+    @MappedCollection(idColumn = "phone_id")
+    private Phone phone;
 }
