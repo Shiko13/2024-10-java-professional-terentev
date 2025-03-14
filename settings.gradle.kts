@@ -12,6 +12,7 @@ include("hw11-cache")
 include("hw12-web-server")
 include("hw13-di")
 include("hw14-spring-boot")
+include("hw15-executors")
 
 pluginManagement {
     val dependencyManagement: String by settings
