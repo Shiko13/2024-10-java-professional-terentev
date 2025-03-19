@@ -32,7 +32,8 @@ public class SensorDataProcessorBuffered implements SensorDataProcessor {
         try {
             dataBuffer.put(data);
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            log.warn("Обнаружено прерывание потока при добавлении данных в очередь");
+            return;
         }
 
         if (dataBuffer.size() >= bufferSize) {
@@ -40,7 +41,7 @@ public class SensorDataProcessorBuffered implements SensorDataProcessor {
         }
     }
 
-    public void flush() {
+    public synchronized void flush() {
         List<SensorData> bufferedData = new ArrayList<>(dataBuffer.size());
 
         if (!dataBuffer.isEmpty()) {
