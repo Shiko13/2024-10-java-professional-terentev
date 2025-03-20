@@ -6,9 +6,6 @@ plugins {
     id("com.google.protobuf") version "0.9.4"
 }
 
-val errorProneAnnotations: String by project
-val tomcatAnnotationsApi: String by project
-
 dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
