@@ -15,6 +15,8 @@ include("hw14-spring-boot")
 include("hw15-executors")
 include("hw16-concurrent-collections")
 include("hw17-gRPC")
+include ("hw18-webflux:client-service")
+include ("hw18-webflux:datastore-service")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -32,4 +34,3 @@ include("hw09-jdbc:demo")
 findProject(":hw09-jdbc:demo")?.name = "demo"
 include("hw09-jdbc:homework")
 findProject(":hw09-jdbc:homework")?.name = "homework"
-
